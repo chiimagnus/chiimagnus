@@ -1,4 +1,4 @@
-## Hey!
+## Hey! 👋 I'm 𝓒𝓱𝓲𝓲 𝓜𝓪𝓰𝓷𝓾𝓼
 
 <!--
 **chiimagnus/chiimagnus** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
