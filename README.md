@@ -1,5 +1,4 @@
-## Hey! 👋 I'm 𝓒𝓱𝓲𝓲 𝓜𝓪𝓰𝓷𝓾𝓼
-
+## ![Typing SVG](https://readme-typing-svg.demolab.com/?lines=Hey,+There!+👋+I'm+𝓒𝓱𝓲𝓲+𝓜𝓪𝓰𝓷𝓾𝓼)
 <!--
 **chiimagnus/chiimagnus** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 
@@ -18,3 +17,4 @@ Here are some ideas to get you started:
 ![chiimagnus's Most used languages](https://github-readme-stats.vercel.app/api/top-langs/?username=chiimagnus&layout=compact&hide_border=true&langs_count=10)
 
 
+![Ashutosh's github activity graph](https://github-readme-activity-graph.vercel.app/graph?username=chiimagnus)
