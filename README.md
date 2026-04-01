@@ -3,3 +3,5 @@
 <div align="leading">
   <img src="./profile-3d-contrib/profile-season-animate.svg" width="500" />
 </div>
+
+[![chiimagnus's github activity graph](https://github-readme-activity-graph.vercel.app/graph?username=chiimagnus&theme=high-contrast)](https://github.com/ashutosh00710/github-readme-activity-graph)
