@@ -1,0 +1,149 @@
+name: Update activity graph
+
+on:
+  schedule:
+    - cron: "15 0 * * *"
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/activity-graph.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  graph:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Generate 30-day activity graph
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const fs = require("node:fs");
+            const path = require("node:path");
+
+            const username = context.repo.owner;
+            const to = new Date();
+            to.setUTCHours(23, 59, 59, 999);
+            const from = new Date(to);
+            from.setUTCDate(from.getUTCDate() - 29);
+            from.setUTCHours(0, 0, 0, 0);
+
+            const result = await github.graphql(
+              `query($login: String!, $from: DateTime!, $to: DateTime!) {
+                user(login: $login) {
+                  contributionsCollection(from: $from, to: $to) {
+                    contributionCalendar {
+                      weeks {
+                        contributionDays {
+                          date
+                          contributionCount
+                        }
+                      }
+                    }
+                  }
+                }
+              }`,
+              {
+                login: username,
+                from: from.toISOString(),
+                to: to.toISOString(),
+              },
+            );
+
+            const contributionDays = result.user.contributionsCollection.contributionCalendar.weeks
+              .flatMap((week) => week.contributionDays);
+            const byDate = new Map(
+              contributionDays.map((day) => [day.date, day.contributionCount]),
+            );
+            const days = Array.from({ length: 30 }, (_, index) => {
+              const date = new Date(from);
+              date.setUTCDate(from.getUTCDate() + index);
+              const key = date.toISOString().slice(0, 10);
+              return { date: key, count: byDate.get(key) ?? 0 };
+            });
+
+            const width = 1000;
+            const height = 300;
+            const margin = { top: 68, right: 24, bottom: 42, left: 52 };
+            const chartWidth = width - margin.left - margin.right;
+            const chartHeight = height - margin.top - margin.bottom;
+            const step = chartWidth / days.length;
+            const barWidth = Math.max(5, step * 0.56);
+            const maxCount = Math.max(...days.map((day) => day.count), 1);
+            const scaleMax = Math.max(4, Math.ceil(maxCount / 4) * 4);
+            const total = days.reduce((sum, day) => sum + day.count, 0);
+
+            const x = (index) => margin.left + step * index + step / 2;
+            const y = (count) => margin.top + chartHeight - (count / scaleMax) * chartHeight;
+
+            const points = days.map((day, index) => ({ x: x(index), y: y(day.count) }));
+            const smoothPath = (items) => {
+              let d = `M ${items[0].x.toFixed(1)} ${items[0].y.toFixed(1)}`;
+              for (let index = 0; index < items.length - 1; index += 1) {
+                const p0 = items[index - 1] ?? items[index];
+                const p1 = items[index];
+                const p2 = items[index + 1];
+                const p3 = items[index + 2] ?? p2;
+                const cp1x = p1.x + (p2.x - p0.x) / 6;
+                const cp1y = p1.y + (p2.y - p0.y) / 6;
+                const cp2x = p2.x - (p3.x - p1.x) / 6;
+                const cp2y = p2.y - (p3.y - p1.y) / 6;
+                d += ` C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${p2.x.toFixed(1)} ${p2.y.toFixed(1)}`;
+              }
+              return d;
+            };
+
+            const grid = Array.from({ length: 5 }, (_, index) => {
+              const value = (scaleMax / 4) * index;
+              const lineY = y(value);
+              return `
+                <line x1="${margin.left}" y1="${lineY}" x2="${width - margin.right}" y2="${lineY}" stroke="#30363d" stroke-width="1" />
+                <text x="${margin.left - 10}" y="${lineY + 4}" text-anchor="end" fill="#8b949e" font-size="11">${Math.round(value)}</text>`;
+            }).join("");
+
+            const bars = days.map((day, index) => {
+              const top = y(day.count);
+              const barHeight = margin.top + chartHeight - top;
+              return `<rect x="${(x(index) - barWidth / 2).toFixed(1)}" y="${top.toFixed(1)}" width="${barWidth.toFixed(1)}" height="${Math.max(barHeight, day.count > 0 ? 2 : 0).toFixed(1)}" rx="3" fill="#39d353" fill-opacity="0.55" />`;
+            }).join("");
+
+            const labels = days.map((day, index) => {
+              if (index % 5 !== 0 && index !== days.length - 1) return "";
+              const label = day.date.slice(5).replace("-", "/");
+              return `<text x="${x(index).toFixed(1)}" y="${height - 16}" text-anchor="middle" fill="#8b949e" font-size="11">${label}</text>`;
+            }).join("");
+
+            const dots = points.map((point) =>
+              `<circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="2.8" fill="#f0f6fc" stroke="#58a6ff" stroke-width="1.5" />`,
+            ).join("");
+
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 ${width} ${height}" role="img" aria-label="${username}'s GitHub activity over the last 30 days">
+              <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="12" fill="#0d1117" stroke="#30363d" />
+              <text x="${margin.left}" y="30" fill="#f0f6fc" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="18" font-weight="600">GitHub Activity · Last 30 Days</text>
+              <text x="${margin.left}" y="50" fill="#8b949e" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="12">${total} contributions · bars = daily count · line = trend</text>
+              <g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif">
+                ${grid}
+                ${bars}
+                <path d="${smoothPath(points)}" fill="none" stroke="#58a6ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                ${dots}
+                ${labels}
+              </g>
+            </svg>`;
+
+            fs.mkdirSync(path.join(process.cwd(), "assets"), { recursive: true });
+            fs.writeFileSync(path.join(process.cwd(), "assets", "activity-graph.svg"), svg);
+
+            if ((svg.match(/<rect x=/g) ?? []).length < 31 || points.length !== 30) {
+              throw new Error("Activity graph self-check failed");
+            }
+
+      - name: Commit graph
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/activity-graph.svg
+          git diff --cached --quiet || git commit -m "更新 30 天活动图"
+          git push

@@ -1,3 +1,3 @@
 ## ![Typing SVG](https://readme-typing-svg.demolab.com/?lines=Hey,+There!+👋+I'm+𝓒𝓱𝓲𝓲+𝓜𝓪𝓰𝓷𝓾𝓼)
 
-![chiimagnus's github activity graph](https://github-readme-activity-graph.vercel.app/graph?username=chiimagnus&theme=high-contrast)
+![chiimagnus's 30-day github activity graph](https://raw.githubusercontent.com/chiimagnus/chiimagnus/main/assets/activity-graph.svg)
