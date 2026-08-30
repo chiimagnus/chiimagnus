@@ -77,8 +77,8 @@ function smoothPath(points) {
 
 function renderSvg(days, login) {
   const width = 1000;
-  const height = 280;
-  const margin = { top: 74, right: 34, bottom: 40, left: 50 };
+  const height = 258;
+  const margin = { top: 52, right: 34, bottom: 40, left: 50 };
   const chartWidth = width - margin.left - margin.right;
   const chartHeight = height - margin.top - margin.bottom;
   const maxCount = Math.max(...days.map((day) => day.count), 1);
@@ -118,8 +118,7 @@ function renderSvg(days, login) {
       </linearGradient>
     </defs>
     <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="14" fill="#0d1117" stroke="#21262d" />
-    <text x="${margin.left}" y="31" fill="#f0f6fc" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="19" font-weight="600">GitHub Activity · Last 30 Days</text>
-    <text x="${margin.left}" y="52" fill="#7d8590" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="11.5">${total} contributions · ${activeDays} active days · peak ${maxCount}</text>
+    <text x="${margin.left}" y="30" fill="#7d8590" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="11.5">${total} contributions · ${activeDays} active days · peak ${maxCount}</text>
     <g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif">
       ${grid}
       <path d="${areaPath}" fill="url(#activity-fill)" />
