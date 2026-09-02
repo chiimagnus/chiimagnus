@@ -97,35 +97,51 @@ function renderSvg(days, login) {
     const value = (scaleMax / 3) * index;
     const lineY = y(value);
     return `
-      <line x1="${margin.left}" y1="${lineY}" x2="${width - margin.right}" y2="${lineY}" stroke="#21262d" stroke-width="1" />
-      <text x="${margin.left - 12}" y="${lineY + 4}" text-anchor="end" fill="#6e7681" font-size="10.5">${Math.round(value)}</text>`;
+      <line class="grid-line" x1="${margin.left}" y1="${lineY}" x2="${width - margin.right}" y2="${lineY}" stroke-width="1" />
+      <text class="axis-label" x="${margin.left - 12}" y="${lineY + 4}" text-anchor="end" font-size="10.5">${Math.round(value)}</text>`;
   }).join("");
 
   const labels = days.map((day, index) => {
     if (index % 5 !== 0 && index !== days.length - 1) return "";
     const label = day.date.slice(5).replace("-", "/");
-    return `<text x="${x(index).toFixed(1)}" y="${height - 16}" text-anchor="middle" fill="#8b949e" font-size="11">${label}</text>`;
+    return `<text class="axis-label" x="${x(index).toFixed(1)}" y="${height - 16}" text-anchor="middle" font-size="11">${label}</text>`;
   }).join("");
 
   const lastPoint = points.at(-1);
 
   return `<svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 ${width} ${height}" role="img" aria-label="${login}'s GitHub activity over the last 30 days">
     <defs>
+      <style>
+        .meta { fill: #59636e; }
+        .axis-label { fill: #6e7781; }
+        .grid-line { stroke: #d0d7de; stroke-opacity: 0.72; }
+        .endpoint-ring { fill: #ffffff; }
+        @media (prefers-color-scheme: dark) {
+          .meta { fill: #8c959f; }
+          .axis-label { fill: #8b949e; }
+          .grid-line { stroke: #30363d; stroke-opacity: 0.9; }
+          .endpoint-ring { fill: #0d1117; }
+        }
+      </style>
+      <linearGradient id="activity-stroke" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="#ff4d00" />
+        <stop offset="55%" stop-color="#ff7a00" />
+        <stop offset="100%" stop-color="#ffc145" />
+      </linearGradient>
       <linearGradient id="activity-fill" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#58a6ff" stop-opacity="0.22" />
-        <stop offset="72%" stop-color="#58a6ff" stop-opacity="0.04" />
-        <stop offset="100%" stop-color="#58a6ff" stop-opacity="0" />
+        <stop offset="0%" stop-color="#ff6a00" stop-opacity="0.28" />
+        <stop offset="72%" stop-color="#ff8a00" stop-opacity="0.06" />
+        <stop offset="100%" stop-color="#ffb347" stop-opacity="0" />
       </linearGradient>
     </defs>
-    <rect x="0.5" y="0.5" width="${width - 1}" height="${height - 1}" rx="14" fill="#0d1117" stroke="#21262d" />
-    <text x="${margin.left}" y="30" fill="#7d8590" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="11.5">${total} contributions · ${activeDays} active days · peak ${maxCount}</text>
+    <text class="meta" x="${margin.left}" y="30" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif" font-size="11.5">${total} contributions · ${activeDays} active days · peak ${maxCount}</text>
     <g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica,Arial,sans-serif">
       ${grid}
       <path d="${areaPath}" fill="url(#activity-fill)" />
-      <path d="${linePath}" fill="none" stroke="#58a6ff" stroke-opacity="0.14" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
-      <path id="activity-line" d="${linePath}" fill="none" stroke="#58a6ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
-      <circle cx="${lastPoint.x.toFixed(1)}" cy="${lastPoint.y.toFixed(1)}" r="5" fill="#0d1117" stroke="#58a6ff" stroke-width="2.5" />
-      <circle cx="${lastPoint.x.toFixed(1)}" cy="${lastPoint.y.toFixed(1)}" r="1.8" fill="#f0f6fc" />
+      <path d="${linePath}" fill="none" stroke="#ff7a00" stroke-opacity="0.16" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" />
+      <path id="activity-line" d="${linePath}" fill="none" stroke="url(#activity-stroke)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+      <circle class="endpoint-ring" cx="${lastPoint.x.toFixed(1)}" cy="${lastPoint.y.toFixed(1)}" r="5" stroke="#ff8a00" stroke-width="2.5" />
+      <circle cx="${lastPoint.x.toFixed(1)}" cy="${lastPoint.y.toFixed(1)}" r="1.8" fill="#ffd166" />
       ${labels}
     </g>
   </svg>`;
@@ -133,7 +149,13 @@ function renderSvg(days, login) {
 
 const days = await loadDays(username);
 const svg = renderSvg(days, username);
-if (!svg.includes('id="activity-line"') || days.length !== 30 || /<rect[^>]+fill="#39d353"/.test(svg)) {
+if (
+  !svg.includes('id="activity-line"') ||
+  !svg.includes('id="activity-stroke"') ||
+  !svg.includes("prefers-color-scheme: dark") ||
+  svg.includes("<rect") ||
+  days.length !== 30
+) {
   throw new Error("Activity graph self-check failed");
 }
 
