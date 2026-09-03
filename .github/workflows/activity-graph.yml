@@ -2,7 +2,7 @@ name: Update activity graph
 
 on:
   schedule:
-    - cron: "0 4,10,16,20 * * *"
+    - cron: "0 * * * *"
   workflow_dispatch:
   push:
     paths:
