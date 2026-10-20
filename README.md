@@ -14,9 +14,8 @@ A local-first web clipper for AI chats, articles, and videos, with browser exten
 
 ## Also building
 
-- **Apple tools:** [AppleBooksCLI](https://github.com/chiimagnus/AppleBooksCLI) (Books automation), [Roamer](https://github.com/chiimagnus/Roamer) (visionOS Simulator automation), [AppleMapsCLI](https://github.com/chiimagnus/AppleMapsCLI) (multi-stop routing fork).
+- **Apple tools:** [AppleBooksCLI](https://github.com/chiimagnus/AppleBooksCLI), [Roamer](https://github.com/chiimagnus/Roamer) (visionOS Simulator CLI), [AppleMapsCLI](https://github.com/chiimagnus/AppleMapsCLI) (multi-stop routing fork).
 - **Spatial & games:** [HappyPianist](https://github.com/chiimagnus/HappyPianist) (piano practice on Apple Vision Pro), [Richman3D](https://github.com/chiimagnus/Richman3D) (3D browser board game).
-- **Bailey extensions:** [TreeHerder](https://github.com/chiimagnus/TreeHerder) (early-stage plugin marketplace of [Bailey](https://github.com/chiimagnus/Bailey)).
 
 <details>
 <summary>Earlier projects and experiments (7)</summary>
