@@ -14,18 +14,28 @@ A local-first web clipper for AI chats, articles, and videos, with browser exten
 
 ## Also building
 
-- **Apple tools:** [AppleBooksCLI](https://github.com/chiimagnus/AppleBooksCLI), [Roamer](https://github.com/chiimagnus/Roamer) (visionOS Simulator CLI), [AppleMapsCLI](https://github.com/chiimagnus/AppleMapsCLI) (multi-stop routing fork).
-- **Spatial & games:** [HappyPianist](https://github.com/chiimagnus/HappyPianist) (piano practice on Apple Vision Pro), [Richman3D](https://github.com/chiimagnus/Richman3D) (3D browser board game).
+Apple tools:
+
+[AppleBooksCLI](https://github.com/chiimagnus/AppleBooksCLI) Native Apple Books CLI for macOS
+[Roamer](https://github.com/chiimagnus/Roamer) (visionOS Simulator CLI)
+[AppleMapsCLI](https://github.com/chiimagnus/AppleMapsCLI) (multi-stop routing fork).
+
+Spatial & games
+
+[HappyPianist](https://github.com/chiimagnus/HappyPianist) (piano practice on Apple Vision Pro), 
+[Richman3D](https://github.com/chiimagnus/Richman3D) (3D browser board game).
+[VibeSports](https://github.com/chiimagnus/VibeSports) (camera-controlled exercise game).
 
 <details>
 <summary>Earlier projects and experiments (7)</summary>
 
 - **Knowledge & reading:** [logseq-AIsearch](https://github.com/chiimagnus/logseq-AIsearch) (Logseq AI search), [Vniverse](https://github.com/chiimagnus/Vniverse) (document reader with narration), [StreamVoice](https://github.com/chiimagnus/StreamVoice) (streaming speech synthesis).
 - **Creative tools:** [LihuaCat](https://github.com/chiimagnus/LihuaCat) (photo-to-video CLI), [FrameWeavers](https://github.com/chiimagnus/FrameWeavers) (illustrated stories; front-end contribution).
-- **Games:** [Salu](https://github.com/chiimagnus/salu) (card battler), [VibeSports](https://github.com/chiimagnus/VibeSports) (camera-controlled exercise game).
+- **Games:** [Salu](https://github.com/chiimagnus/salu) (card battler).
 
 </details>
 
 ---
 
 ![chiimagnus's 30-day github activity graph](https://raw.githubusercontent.com/chiimagnus/chiimagnus/main/assets/activity-graph.svg)
+j
