@@ -16,14 +16,18 @@ A local-first web clipper for AI chats, articles, and videos, with browser exten
 
 Apple tools:
 
-[AppleBooksCLI](https://github.com/chiimagnus/AppleBooksCLI) Native Apple Books CLI for macOS
-[Roamer](https://github.com/chiimagnus/Roamer) (visionOS Simulator CLI)
-[AppleMapsCLI](https://github.com/chiimagnus/AppleMapsCLI) (multi-stop routing fork).
+[AppleBooksCLI](https://github.com/chiimagnus/AppleBooksCLI) Native Apple Books CLI for macOS.
 
-Spatial & games
+[Roamer](https://github.com/chiimagnus/Roamer): visionOS Simulator CLI.
 
-[HappyPianist](https://github.com/chiimagnus/HappyPianist) (piano practice on Apple Vision Pro), 
-[Richman3D](https://github.com/chiimagnus/Richman3D) (3D browser board game).
+[AppleMapsCLI](https://github.com/chiimagnus/AppleMapsCLI): multi-stop routing fork.
+
+Spatial & games:
+
+[HappyPianist](https://github.com/chiimagnus/HappyPianist): piano practice on Apple Vision Pro
+
+[Richman3D](https://github.com/chiimagnus/Richman3D): 3D browser board game.
+
 [VibeSports](https://github.com/chiimagnus/VibeSports) (camera-controlled exercise game).
 
 <details>
