@@ -27,6 +27,4 @@ A local-first web clipper for AI chats, articles, and videos, with browser exten
 
 </details>
 
----
-
 ![chiimagnus's 30-day github activity graph](https://raw.githubusercontent.com/chiimagnus/chiimagnus/main/assets/activity-graph.svg)
